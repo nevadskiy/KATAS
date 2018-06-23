@@ -11,5 +11,8 @@
         "psr-4": {
             "Tests\\": "tests/"
         }
+    },
+    "require": {
+        "laravel/tinker": "^1.0"
     }
 }

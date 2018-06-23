@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class RomanNumeralConvertor
+ */
 class RomanNumeralConvertor
 {
+    /**
+     * @var array
+     */
     protected static $convertions = [
         1000 => 'M',
         900 => 'CM',
@@ -18,7 +24,11 @@ class RomanNumeralConvertor
         1 => 'I'
     ];
     
-    public function convert(int $number)
+    /**
+     * @param int $number
+     * @return string
+     */
+    public function convert(int $number): string
     {
         $converted = '';
         
