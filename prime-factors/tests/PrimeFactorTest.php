@@ -77,4 +77,12 @@ class PrimeFactorTest extends TestCase
         
         $this->assertEquals([3, 3], $result);
     }
+    
+    /** @test */
+    public function it_returns_2_2_5_5_for_100()
+    {
+        $result = $this->primeFactor->generate(100);
+        
+        $this->assertEquals([2, 2, 5, 5], $result);
+    }
 }
