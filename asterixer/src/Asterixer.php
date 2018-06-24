@@ -38,16 +38,12 @@ class Asterixer
         switch (mb_strlen($username)) {
             case 1:
                 return $username[0];
-                break;
             case 2:
                 return $username[0].$this->hashChar;
-                break;
             case 3:
                 return $username[0].str_repeat($this->hashChar, 2);
-                break;
             case 4:
                 return $username[0].str_repeat($this->hashChar, 2).$username[3];
-                break;
             default:
                 return $this->asterixLong($username);
         }
