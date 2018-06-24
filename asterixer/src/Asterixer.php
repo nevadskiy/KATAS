@@ -39,6 +39,7 @@ class Asterixer
 
         if ($len < 4) return $this->asterixTiny($username, $len -1);
         if ($len < 6) return $this->asterixShort($username, $len - 2);
+
         return $this->asterixLong($username, $len - 4);
     }
 
