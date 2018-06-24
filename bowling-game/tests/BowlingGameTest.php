@@ -71,6 +71,20 @@ class BowlingGameTest extends TestCase
         $this->assertEquals(300, $score);
     }
 
+    /** @test */
+    public function it_guards_against_invalid_rolls()
+    {
+        $this->expectException('InvalidArgumentException');
+        $this->game->roll(-2);
+    }
+
+    /** @test */
+    public function it_guards_against_more_than_10_rolls()
+    {
+        $this->expectException('InvalidArgumentException');
+        $this->game->roll(12);
+    }
+
     private function rollSpare(): void
     {
         $this->game->roll(2);

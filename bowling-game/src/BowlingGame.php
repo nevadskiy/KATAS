@@ -20,6 +20,8 @@ class BowlingGame
      */
     public function roll(int $pins)
     {
+        $this->guardAgainstInvalidRoll($pins);
+
         $this->rolls[] = $pins;
     }
 
@@ -34,7 +36,7 @@ class BowlingGame
         for ($frame = 1; $frame <= 10; $frame++) {
             if ($this->isStrike($roll)) {
                 $score += 10 + $this->getStrikeBonus($roll);
-                $roll += 1;
+                $roll++;
             } elseif ($this->isSpare($roll)) {
                 $score += 10 + $this->getSpareBonus($roll);
                 $roll += 2;
@@ -90,5 +92,15 @@ class BowlingGame
     private function getStrikeBonus($roll)
     {
         return $this->rolls[$roll + 1] + $this->rolls[$roll + 2];
+    }
+
+    /**
+     * @param int $pins
+     */
+    private function guardAgainstInvalidRoll(int $pins): void
+    {
+        if ($pins < 0 || $pins > 10) {
+            throw new InvalidArgumentException("Wrong pins are given");
+        }
     }
 }
