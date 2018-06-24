@@ -1,29 +1,47 @@
 <?php
 
+/**
+ * Class BowlingGame
+ */
 class BowlingGame
 {
+    /**
+     * @var int
+     */
     protected $score = 0;
 
+    /**
+     * @var array
+     */
     protected $rolls = [];
 
-    public function roll($pins)
+    /**
+     * @param $pins
+     */
+    public function roll(int $pins)
     {
         $this->rolls[] = $pins;
     }
 
+    /**
+     * @return int
+     */
     public function score()
     {
         $score = 0;
         $roll = 0;
 
         for ($frame = 1; $frame <= 10; $frame++) {
-            if ($this->isSpare($roll)) {
-                $score += $this->getSpareScore($roll);
+            if ($this->isStrike($roll)) {
+                $score += 10 + $this->getStrikeBonus($roll);
+                $roll += 1;
+            } elseif ($this->isSpare($roll)) {
+                $score += 10 + $this->getSpareBonus($roll);
+                $roll += 2;
             } else {
-                $score += $this->getDefaultFrameScore($roll);
+                $score += $this->getDefaultScore($roll);
+                $roll += 2;
             }
-
-            $roll += 2;
         }
 
         return $score;
@@ -35,14 +53,14 @@ class BowlingGame
      */
     private function isSpare($roll): bool
     {
-        return $this->getDefaultFrameScore($roll) === 10;
+        return $this->getDefaultScore($roll) === 10;
     }
 
     /**
      * @param $roll
      * @return mixed
      */
-    private function getDefaultFrameScore($roll)
+    private function getDefaultScore($roll)
     {
         return $this->rolls[$roll] + $this->rolls[$roll + 1];
     }
@@ -51,8 +69,26 @@ class BowlingGame
      * @param $roll
      * @return int
      */
-    private function getSpareScore($roll): int
+    private function getSpareBonus($roll): int
     {
-        return 10 + $this->rolls[$roll + 2];
+        return $this->rolls[$roll + 2];
+    }
+
+    /**
+     * @param $roll
+     * @return bool
+     */
+    private function isStrike($roll): bool
+    {
+        return $this->rolls[$roll] === 10;
+    }
+
+    /**
+     * @param $roll
+     * @return int|mixed
+     */
+    private function getStrikeBonus($roll)
+    {
+        return $this->rolls[$roll + 1] + $this->rolls[$roll + 2];
     }
 }

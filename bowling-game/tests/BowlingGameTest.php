@@ -46,10 +46,40 @@ class BowlingGameTest extends TestCase
         $this->assertEquals(20, $score);
     }
 
+    /** @test */
+    public function it_roles_a_two_rolls_bonus_for_a_strike_in_the_previous_frame()
+    {
+        $this->rollStrike();
+
+        $this->game->roll(7);
+        $this->game->roll(2);
+
+        $this->rollTimes(17, 0);
+
+        $score = $this->game->score();
+
+        $this->assertEquals(28, $score);
+    }
+
+    /** @test */
+    public function it_scores_a_perfect_game()
+    {
+        $this->rollTimes(12, 10);
+
+        $score = $this->game->score();
+
+        $this->assertEquals(300, $score);
+    }
+
     private function rollSpare(): void
     {
         $this->game->roll(2);
         $this->game->roll(8);
+    }
+
+    private function rollStrike(): void
+    {
+        $this->game->roll(10);
     }
 
     private function rollTimes(int $times, int $pins)
