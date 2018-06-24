@@ -37,6 +37,14 @@ class AsterixerTest extends TestCase
     
         $this->assertEquals('a**@example.com', $result);
     }
+
+    /** @test */
+    public function it_hashes_fifth_chars_email()
+    {
+        $result = $this->asterixer->email('abcde@example.com');
+
+        $this->assertEquals('a***e@example.com', $result);
+    }
     
     /** @test */
     public function it_hashes_tiny_email()

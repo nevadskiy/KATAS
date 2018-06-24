@@ -35,18 +35,43 @@ class Asterixer
      */
     protected function getAsterixedUsername(string $username)
     {
-        switch (mb_strlen($username)) {
-            case 1:
-                return $username[0];
-            case 2:
-                return $username[0].$this->hashChar;
-            case 3:
-                return $username[0].str_repeat($this->hashChar, 2);
-            case 4:
-                return $username[0].str_repeat($this->hashChar, 2).$username[3];
-            default:
-                return $this->asterixLong($username);
-        }
+        $len = mb_strlen($username);
+
+        if ($len < 4) return $this->asterixTiny($username, $len -1);
+        if ($len < 6) return $this->asterixShort($username, $len - 2);
+        return $this->asterixLong($username, $len - 4);
+    }
+
+    /**
+     * @param string $username
+     * @param int $multiplier
+     * @return string
+     */
+    protected function asterixTiny(string $username, int $multiplier)
+    {
+        return $username[0].str_repeat($this->hashChar, $multiplier);
+    }
+
+    /**
+     * @param string $username
+     * @param int $multiplier
+     * @return string
+     */
+    protected function asterixShort(string $username, int $multiplier)
+    {
+        return $this->asterixTiny($username, $multiplier).$username[$multiplier + 1];
+    }
+
+    /**
+     * @param string $username
+     * @return string
+     */
+    protected function asterixLong(string $username, int $multiplier)
+    {
+        return ''
+            .substr($username, 0, 2)
+            .str_repeat($this->hashChar, $multiplier)
+            .substr($username, -2);
     }
     
     /**
@@ -62,17 +87,5 @@ class Asterixer
         }
         
         return $emailExploded;
-    }
-    
-    /**
-     * @param string $username
-     * @return string
-     */
-    protected function asterixLong(string $username)
-    {
-        return ''
-            .substr($username, 0, 2)
-            .str_repeat($this->hashChar, mb_strlen($username) - 4)
-            .substr($username, -2);
     }
 }
